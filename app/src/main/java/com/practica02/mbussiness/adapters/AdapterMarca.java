@@ -14,16 +14,19 @@ import com.practica02.mbussiness.clases.Marca;
 
 import java.util.ArrayList;
 
-public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> implements View.OnClickListener{
+public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> implements View.OnClickListener {
 
     LayoutInflater inflater;
-    ArrayList <Marca> marca;
+    ArrayList<Marca> marca;
 
     //listener
     private View.OnClickListener listener;
 
-    public AdapterMarca (Context context, ArrayList <Marca> marca){
+    public AdapterMarca(Context context) {
         this.inflater = LayoutInflater.from(context);
+    }
+
+    public void setMarca(ArrayList<Marca> marca) {
         this.marca = marca;
     }
 
@@ -58,13 +61,13 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
 
     @Override
     public void onClick(View v) {
-        if(listener!=null){
+        if (listener != null) {
             listener.onClick(v);
         }
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView codigo, nombre, status;
 

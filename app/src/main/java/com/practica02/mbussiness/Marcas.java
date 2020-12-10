@@ -15,15 +15,18 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.practica02.mbussiness.adapters.AdapterMarca;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.repository.MarcaRepository;
 
 import java.util.ArrayList;
 
 public class Marcas extends Fragment {
 
 
-    AdapterMarca adapterMarca;
+    private static AdapterMarca adapterMarca;
+    private static ArrayList<Marca> listaMarca;
+    //AdapterMarca adapterMarca;
     RecyclerView rvMarcas;
-    ArrayList <Marca> listaMarca;
+    //ArrayList<Marca> listaMarca;
 
     FloatingActionButton addMarca;
 
@@ -39,7 +42,7 @@ public class Marcas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_marcas, container, false);
-        rvMarcas=vista.findViewById(R.id.rvMarcas);
+        rvMarcas = vista.findViewById(R.id.rvMarcas);
         addMarca = vista.findViewById(R.id.addMarca);
 
 
@@ -56,25 +59,32 @@ public class Marcas extends Fragment {
             }
         });
 
+        rvMarcas.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapterMarca = new AdapterMarca(getContext());
+        adapterMarca.setMarca(new ArrayList<>());
+        rvMarcas.setAdapter(adapterMarca);
 
         return vista;
     }
-    public void openDialog(){
-        ExampleDialog exampleDialog = new ExampleDialog();
-        exampleDialog.show(getFragmentManager(),"example dialog");
 
+    public void openDialog() {
+        ExampleDialog exampleDialog = new ExampleDialog();
+        exampleDialog.show(getFragmentManager(), "example dialog");
     }
-    public void cargarLista(){
-        listaMarca.add(new Marca("M001","Weber","activo"));
-        listaMarca.add(new Marca("M002","Mr Grill","inactivo"));
-        listaMarca.add(new Marca("M003","Parrillero","eliminado"));
-        listaMarca.add(new Marca("M004","Barbacoa","activo"));
-        listaMarca.add(new Marca("M005","Disco","activo"));
-        listaMarca.add(new Marca("M004","Cassete","inactivo"));
+
+    public static void cargarLista() {
+        MarcaRepository marcaRepository = MarcaRepository.getInstance();
+        marcaRepository.findAll().addOnCompleteListener(task -> {
+            listaMarca.clear();
+            listaMarca.addAll(task.getResult());
+            adapterMarca.setMarca(listaMarca);
+            adapterMarca.notifyDataSetChanged();
+        });
     }
-    public void mostrarDatos(){
-        rvMarcas.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterMarca = new AdapterMarca(getContext(),listaMarca);
-        rvMarcas.setAdapter(adapterMarca);
+
+    public void mostrarDatos() {
+        //rvMarcas.setLayoutManager(new LinearLayoutManager(getContext()));
+        //adapterMarca = new AdapterMarca(getContext(), listaMarca);
+        //rvMarcas.setAdapter(adapterMarca);
     }
 }

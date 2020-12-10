@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "469479404150",
+    "project_id": "mbussiness-f784d",
+    "storage_bucket": "mbussiness-f784d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469479404150:android:5d1bc1a29889801618a557",
+        "android_client_info": {
+          "package_name": "com.practica02.mbussiness"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469479404150-qu1t5n32346vg5lqkinpgea786j806e6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmvcMwJOWL4ZIDOK7ePUeCUIMtdPxT3rI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469479404150-qu1t5n32346vg5lqkinpgea786j806e6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
