@@ -6,7 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 public class ExampleDialog extends AppCompatDialogFragment {
 
     private EditText code, name, status;
+    Spinner spinnerEstado;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -35,7 +38,13 @@ public class ExampleDialog extends AppCompatDialogFragment {
         });
         code = view.findViewById(R.id.code);
         name = view.findViewById(R.id.name);
-        status = view.findViewById(R.id.status);
+        spinnerEstado = view.findViewById(R.id.spinnerEstado);
+
+        String [] opciones = {"activo","inactivo","eliminado"};
+
+        ArrayAdapter <CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.combo_status, android.R.layout.simple_spinner_item);
+        spinnerEstado.setAdapter(adapter);
+
 
         return builder.create();
 

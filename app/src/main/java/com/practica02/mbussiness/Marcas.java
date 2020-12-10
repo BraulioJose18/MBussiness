@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,6 +28,7 @@ public class Marcas extends Fragment {
     FloatingActionButton addMarca;
 
     TextView codigo, nombre, estado;
+
 
     public Marcas() {
         // Required empty public constructor
@@ -65,8 +67,8 @@ public class Marcas extends Fragment {
     public void cargarLista(){
         listaMarca.add(new Marca("M001","Weber","activo"));
         listaMarca.add(new Marca("M002","Mr Grill","inactivo"));
-        listaMarca.add(new Marca("M003","Parrillero","reactivo"));
-        listaMarca.add(new Marca("M004","Barbacoa","pasivo"));
+        listaMarca.add(new Marca("M003","Parrillero","eliminado"));
+        listaMarca.add(new Marca("M004","Barbacoa","activo"));
         listaMarca.add(new Marca("M005","Disco","activo"));
         listaMarca.add(new Marca("M004","Cassete","inactivo"));
     }
