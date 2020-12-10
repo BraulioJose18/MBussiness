@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
         showSelectedFragment(new Marcas());
 
+
         menu = (BottomNavigationView) findViewById(R.id.menuContainer);
+        menu.setSelectedItemId(R.id.item3);
 
         menu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
