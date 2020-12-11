@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.repository.RequiredOperation;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> implements View.OnClickListener {
 
     LayoutInflater inflater;
-    ArrayList<Marca> marca;
+    List<Marca> marca;
 
     //listener
     private View.OnClickListener listener;
@@ -26,7 +27,7 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
         this.inflater = LayoutInflater.from(context);
     }
 
-    public void setMarca(ArrayList<Marca> marca) {
+    public void setMarca(List<Marca> marca) {
         this.marca = marca;
     }
 
@@ -48,7 +49,15 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
 
         String codigo = marca.get(position).getCodigo();
         String nombre = marca.get(position).getNombre();
-        String status = marca.get(position).getStatus();
+        String status = "";
+        String registryState = marca.get(position).getStatus();
+        if (registryState.equalsIgnoreCase(RequiredOperation.ACTIVE)) {
+            status = "Activo";
+        } else if (registryState.equalsIgnoreCase(RequiredOperation.INACTIVE)) {
+            status = "Inactivo";
+        } else if (registryState.equalsIgnoreCase(RequiredOperation.ELIMINATED)) {
+            status = "Eliminado";
+        }
         holder.codigo.setText(codigo);
         holder.nombre.setText(nombre);
         holder.status.setText(status);
@@ -67,7 +76,7 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView codigo, nombre, status;
 

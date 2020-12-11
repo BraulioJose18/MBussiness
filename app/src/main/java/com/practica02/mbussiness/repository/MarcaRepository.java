@@ -1,32 +1,37 @@
 package com.practica02.mbussiness.repository;
 
-import android.os.Build;
+import android.util.Log;
 
-import androidx.annotation.RequiresApi;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.repository.livedata.QueryFirebaseLiveData;
 
-import java.util.Optional;
+public class MarcaRepository extends FirebaseRepository<Marca> implements RequiredOperation<Marca> {
 
-public class MarcaRepository extends FireStoreRepository<Marca> {
-    private static MarcaRepository INSTANCE;
+    private static MarcaRepository instance;
 
     public synchronized static MarcaRepository getInstance() {
-        if (INSTANCE == null)
-            INSTANCE = new MarcaRepository();
-        return INSTANCE;
+        if (instance == null) {
+            instance = new MarcaRepository();
+        }
+        return instance;
     }
 
     private MarcaRepository() {
         super(Marca.class);
-        this.TAG = MarcaRepository.class.getSimpleName();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public Task<Optional<Marca>> findById(String identifier) {
-        return this.collectionReference.whereEqualTo("codigo", identifier).get().continueWithTask(task -> Tasks.forResult(Optional.of(task.getResult().toObjects(entityClass).get(0))));
+    public QueryFirebaseLiveData<Marca> getEntitiesWithActiveRegistry() {
+        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", ACTIVE), entityClass);
+    }
+
+    @Override
+    public QueryFirebaseLiveData<Marca> getEntitiesWithInactiveRegistry() {
+        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", INACTIVE), entityClass);
+    }
+
+    @Override
+    public QueryFirebaseLiveData<Marca> getEntitiesWithEliminatedRegistry() {
+        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", ELIMINATED), entityClass);
     }
 }
