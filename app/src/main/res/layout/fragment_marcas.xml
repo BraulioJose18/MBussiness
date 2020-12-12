@@ -28,13 +28,35 @@
                 android:textSize="30dp"
                 android:textStyle="bold" />
 
-            <SearchView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:iconifiedByDefault="false"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="10dp"
-                android:queryHint="Ingrese el código de la marca a buscar"/>
+                android:orientation="horizontal"
+                android:gravity="center">
+
+
+                <SearchView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:iconifiedByDefault="false"
+                    android:queryHint="Ingrese el código de la marca a buscar">
+
+                </SearchView>
+
+                <Button
+                    android:id="@+id/adddMarca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="Añadir"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/button_style"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMarcas"
@@ -44,7 +66,7 @@
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <!-- <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addMarca"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +78,7 @@
             android:contentDescription="TODO"
             android:focusable="true"
             app:srcCompat="@drawable/ic_add"
-            app:tint="@color/white" />
+            app:tint="@color/white" /> -->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

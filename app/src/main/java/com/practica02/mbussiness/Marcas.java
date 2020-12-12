@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -29,7 +30,8 @@ public class Marcas extends Fragment {
     RecyclerView rvMarcas;
     //ArrayList<Marca> listaMarca;
 
-    FloatingActionButton addMarca;
+    //FloatingActionButton addMarca;
+    Button adddMarca;
 
     TextView codigo, nombre, estado;
 
@@ -44,16 +46,25 @@ public class Marcas extends Fragment {
         // Inflate the layout for this fragment
         View vista = inflater.inflate(R.layout.fragment_marcas, container, false);
         rvMarcas = vista.findViewById(R.id.rvMarcas);
-        addMarca = vista.findViewById(R.id.addMarca);
+        //addMarca = vista.findViewById(R.id.addMarca);
+        adddMarca = vista.findViewById(R.id.adddMarca);
 
         listaMarca = new ArrayList<>();
 
-        addMarca.setOnClickListener(new View.OnClickListener() {
+        adddMarca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialog();
             }
         });
+
+
+       /* addMarca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
+            }
+        });*/
         viewModel = new ViewModelProvider(this).get(MarcaViewModel.class);
         rvMarcas.setLayoutManager(new LinearLayoutManager(getContext()));
         adapterMarca = new AdapterMarca(getContext());
