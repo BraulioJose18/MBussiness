@@ -1,8 +1,9 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.clases.UnidadMedida;
-import com.practica02.mbussiness.repository.livedata.QueryFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 
 public class UnidadMedidaRepository extends FirebaseRepository<UnidadMedida> implements RequiredOperation<UnidadMedida> {
 
@@ -20,17 +21,17 @@ public class UnidadMedidaRepository extends FirebaseRepository<UnidadMedida> imp
     }
 
     @Override
-    public QueryFirebaseLiveData<UnidadMedida> getEntitiesWithActiveRegistry() {
-        return new QueryFirebaseLiveData<UnidadMedida>(this.collectionReference.whereEqualTo("status", ACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<UnidadMedida, ? extends Query> getEntitiesWithActiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<UnidadMedida> getEntitiesWithInactiveRegistry() {
-        return new QueryFirebaseLiveData<UnidadMedida>(this.collectionReference.whereEqualTo("status", INACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<UnidadMedida, ? extends Query> getEntitiesWithInactiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", INACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<UnidadMedida> getEntitiesWithEliminatedRegistry() {
-        return new QueryFirebaseLiveData<UnidadMedida>(this.collectionReference.whereEqualTo("status", ELIMINATED), entityClass);
+    public MultipleDocumentReferenceLiveData<UnidadMedida, ? extends Query> getEntitiesWithEliminatedRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ELIMINATED), this.entityClass);
     }
 }

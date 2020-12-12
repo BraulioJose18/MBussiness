@@ -2,13 +2,10 @@ package com.practica02.mbussiness.repository;
 
 import android.util.Log;
 
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.WriteBatch;
+import com.google.firebase.firestore.*;
 import com.practica02.mbussiness.clases.Entity;
-import com.practica02.mbussiness.repository.livedata.CollectionReferenceFirebaseLiveData;
 import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 import com.practica02.mbussiness.utils.MapperObject;
 
 import java.util.List;
@@ -25,15 +22,14 @@ public abstract class FirebaseRepository<E extends Entity> implements CrudFireba
     }
 
     @Override
-    public CollectionReferenceFirebaseLiveData<E> findAll() {
-        Log.e(TAG, "findAll()");
-        return new CollectionReferenceFirebaseLiveData<>(this.collectionReference, this.entityClass);
+    public MultipleDocumentReferenceLiveData<E, CollectionReference> findAll() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference, this.entityClass);
     }
 
     @Override
     public DocumentReferenceFirebaseLiveData<E> findById(String identifier) {
         Log.e(TAG, "findById()");
-        return new DocumentReferenceFirebaseLiveData<>(this.collectionReference.document(identifier), entityClass);
+        return new DocumentReferenceFirebaseLiveData<>(this.collectionReference.document(identifier), this.entityClass);
     }
 
     @Override
@@ -64,7 +60,7 @@ public abstract class FirebaseRepository<E extends Entity> implements CrudFireba
         Log.e(TAG, "updateAll()");
         WriteBatch batch = FirebaseFirestore.getInstance().batch();
         for (E entity : entities) {
-            DocumentReference documentReference = collectionReference.document(entity.getDocumentId());
+            DocumentReference documentReference = this.collectionReference.document(entity.getDocumentId());
             batch.update(documentReference, MapperObject.convertMapToObject(entity));
         }
         batch.commit();

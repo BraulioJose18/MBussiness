@@ -1,5 +1,7 @@
 package com.practica02.mbussiness.clases;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.firestore.Exclude;
 import lombok.*;
 
@@ -17,9 +19,9 @@ public class Articulo extends Entity {
     // Codigo de la Unidad de Medida (NO DOCUMENT ID)
     private String unidadMedidaId;
     @Exclude
-    private Marca marca;
+    private LiveData<Marca> marca;
     @Exclude
-    private UnidadMedida unidadMedida;
+    private LiveData<UnidadMedida> unidadMedida;
 
     public Articulo(String codigo, String nombre, String status, String marcaId, String unidadMedidaId) {
         this.codigo = codigo;

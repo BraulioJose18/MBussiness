@@ -1,8 +1,9 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Entity;
-import com.practica02.mbussiness.repository.livedata.CollectionReferenceFirebaseLiveData;
 import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface CrudFirebaseRepository<E extends Entity, I> {
      *
      * @return LiveData de los documentos referenciados.
      */
-    CollectionReferenceFirebaseLiveData<E> findAll();
+    MultipleDocumentReferenceLiveData<E, ? extends Query> findAll();
 
     /**
      * Obtener la entidad de firebase.

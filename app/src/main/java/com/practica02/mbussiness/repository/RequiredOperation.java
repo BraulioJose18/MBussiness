@@ -1,7 +1,8 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Entity;
-import com.practica02.mbussiness.repository.livedata.QueryFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 
 public interface RequiredOperation<T extends Entity> {
     /**
@@ -22,19 +23,19 @@ public interface RequiredOperation<T extends Entity> {
      *
      * @return Retorna un live data de los documentos que cumplen con el estado activo.
      */
-    QueryFirebaseLiveData<T> getEntitiesWithActiveRegistry();
+    MultipleDocumentReferenceLiveData<T, ? extends Query> getEntitiesWithActiveRegistry();
 
     /**
      * Obtiene entidades con un registro Inactivo.
      *
      * @return Retorna un live data de los documentos que cumplen con el estado inactivo.
      */
-    QueryFirebaseLiveData<T> getEntitiesWithInactiveRegistry();
+    MultipleDocumentReferenceLiveData<T, ? extends Query> getEntitiesWithInactiveRegistry();
 
     /**
      * Obtiene entidades con un registro activo.
      *
      * @return Retorna un live data de los documentos que cumplen con el estado eliminado.
      */
-    QueryFirebaseLiveData<T> getEntitiesWithEliminatedRegistry();
+    MultipleDocumentReferenceLiveData<T, ? extends Query> getEntitiesWithEliminatedRegistry();
 }

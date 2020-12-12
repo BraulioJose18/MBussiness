@@ -1,9 +1,9 @@
 package com.practica02.mbussiness.repository;
 
-import android.util.Log;
-
+import com.google.firebase.firestore.Query;
+import com.practica02.mbussiness.clases.Articulo;
 import com.practica02.mbussiness.clases.Marca;
-import com.practica02.mbussiness.repository.livedata.QueryFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 
 public class MarcaRepository extends FirebaseRepository<Marca> implements RequiredOperation<Marca> {
 
@@ -21,17 +21,17 @@ public class MarcaRepository extends FirebaseRepository<Marca> implements Requir
     }
 
     @Override
-    public QueryFirebaseLiveData<Marca> getEntitiesWithActiveRegistry() {
-        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", ACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<Marca, ? extends Query> getEntitiesWithActiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<Marca> getEntitiesWithInactiveRegistry() {
-        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", INACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<Marca, ? extends Query> getEntitiesWithInactiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", INACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<Marca> getEntitiesWithEliminatedRegistry() {
-        return new QueryFirebaseLiveData<Marca>(this.collectionReference.whereEqualTo("status", ELIMINATED), entityClass);
+    public MultipleDocumentReferenceLiveData<Marca, ? extends Query> getEntitiesWithEliminatedRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ELIMINATED), this.entityClass);
     }
 }

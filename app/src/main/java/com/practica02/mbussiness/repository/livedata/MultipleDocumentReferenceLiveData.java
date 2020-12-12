@@ -13,24 +13,25 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CollectionReferenceFirebaseLiveData<T extends Entity> extends LiveData<List<T>> implements EventListener<QuerySnapshot> {
-    protected static String TAG = CollectionReferenceFirebaseLiveData.class.getSimpleName();
+public class MultipleDocumentReferenceLiveData<T extends Entity, L extends Query> extends LiveData<List<T>> implements EventListener<QuerySnapshot> {
+
+    protected static String TAG = MultipleDocumentReferenceLiveData.class.getSimpleName();
     // Firebase Utils.
-    private final CollectionReference collectionReference;
+    private final L multipleDocuments;
     protected ListenerRegistration listenerRegistration = () -> {
     };
     // Entity Utils.
     protected final List<T> entityList = new ArrayList<>();
     private final Class<T> entityClass;
 
-    public CollectionReferenceFirebaseLiveData(CollectionReference collectionReference, Class<T> entityClass) {
-        this.collectionReference = collectionReference;
+    public MultipleDocumentReferenceLiveData(L multipleDocuments, Class<T> entityClass) {
+        this.multipleDocuments = multipleDocuments;
         this.entityClass = entityClass;
     }
 
     @Override
     protected void onActive() {
-        this.listenerRegistration = this.collectionReference.addSnapshotListener(this);
+        this.listenerRegistration = this.multipleDocuments.addSnapshotListener(this);
         super.onActive();
     }
 

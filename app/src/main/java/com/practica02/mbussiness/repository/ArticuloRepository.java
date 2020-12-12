@@ -1,7 +1,9 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Articulo;
-import com.practica02.mbussiness.repository.livedata.QueryFirebaseLiveData;
+import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
 import com.practica02.mbussiness.repository.relationlivedata.ArticuloCollectionLiveData;
 
 public class ArticuloRepository extends FirebaseRepository<Articulo> implements RequiredOperation<Articulo> {
@@ -22,22 +24,34 @@ public class ArticuloRepository extends FirebaseRepository<Articulo> implements 
         return instance;
     }
 
-    public ArticuloCollectionLiveData findAllWithMarcaAndUnidadMedida() {
-        return new ArticuloCollectionLiveData(collectionReference, marcaRepository, unidadMedidaRepository);
+    public ArticuloCollectionLiveData<? extends Query> findAllWithMarcaAndUnidadMedida() {
+        return new ArticuloCollectionLiveData<>(this.collectionReference, this.marcaRepository, this.unidadMedidaRepository);
+    }
+
+    public ArticuloCollectionLiveData<? extends Query> findAllActiveRegistryWithMarcaAndUnidadMedida() {
+        return new ArticuloCollectionLiveData<>(this.collectionReference.whereEqualTo("status", ACTIVE), this.marcaRepository, this.unidadMedidaRepository);
+    }
+
+    public ArticuloCollectionLiveData<? extends Query> findAllInactiveRegistryWithMarcaAndUnidadMedida() {
+        return new ArticuloCollectionLiveData<>(this.collectionReference.whereEqualTo("status", INACTIVE), this.marcaRepository, this.unidadMedidaRepository);
+    }
+
+    public ArticuloCollectionLiveData<? extends Query> findAllEliminatedRegistryWithMarcaAndUnidadMedida() {
+        return new ArticuloCollectionLiveData<>(this.collectionReference.whereEqualTo("status", ELIMINATED), this.marcaRepository, this.unidadMedidaRepository);
     }
 
     @Override
-    public QueryFirebaseLiveData<Articulo> getEntitiesWithActiveRegistry() {
-        return new QueryFirebaseLiveData<Articulo>(this.collectionReference.whereEqualTo("status", ACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<Articulo, ? extends Query> getEntitiesWithActiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<Articulo> getEntitiesWithInactiveRegistry() {
-        return new QueryFirebaseLiveData<Articulo>(this.collectionReference.whereEqualTo("status", INACTIVE), entityClass);
+    public MultipleDocumentReferenceLiveData<Articulo, ? extends Query> getEntitiesWithInactiveRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", INACTIVE), this.entityClass);
     }
 
     @Override
-    public QueryFirebaseLiveData<Articulo> getEntitiesWithEliminatedRegistry() {
-        return new QueryFirebaseLiveData<Articulo>(this.collectionReference.whereEqualTo("status", ELIMINATED), entityClass);
+    public MultipleDocumentReferenceLiveData<Articulo, ? extends Query> getEntitiesWithEliminatedRegistry() {
+        return new MultipleDocumentReferenceLiveData<>(this.collectionReference.whereEqualTo("status", ELIMINATED), this.entityClass);
     }
 }
