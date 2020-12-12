@@ -60,7 +60,7 @@ public class Marcas extends Fragment {
         adapterMarca.setMarca(listaMarca);
         rvMarcas.setAdapter(adapterMarca);
 
-        viewModel.getActiveListLiveData().observe(this.getViewLifecycleOwner(), marcas -> {
+        viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), marcas -> {
             adapterMarca.setMarca(marcas);
             adapterMarca.notifyDataSetChanged();
         });

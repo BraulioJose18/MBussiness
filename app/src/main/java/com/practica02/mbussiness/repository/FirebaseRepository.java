@@ -21,7 +21,7 @@ public abstract class FirebaseRepository<E extends Entity> implements CrudFireba
     public FirebaseRepository(Class<E> entityClass) {
         Log.e(TAG, "FIREBASE_REPOSITORY");
         this.entityClass = entityClass;
-        this.collectionReference = FirebaseFirestore.getInstance().collection(entityClass.getSimpleName());
+        this.collectionReference = FirebaseFirestore.getInstance().collection(this.entityClass.getSimpleName());
     }
 
     @Override

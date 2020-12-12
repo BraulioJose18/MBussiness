@@ -53,6 +53,7 @@ public class ExampleDialog extends AppCompatDialogFragment {
                 registryState = RequiredOperation.ELIMINATED;
             }
             viewModel.saveOrUpdate(new Marca(code.getText().toString(), name.getText().toString(), registryState));
+        }).setNegativeButton("Cancelar", (dialog, which) -> {
         });
 
 
