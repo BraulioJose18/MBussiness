@@ -11,10 +11,14 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.practica02.mbussiness.clases.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class QueryFirebaseLiveData<T extends Entity> extends LiveData<List<T>> implements EventListener<QuerySnapshot> {
     protected static String TAG = QueryFirebaseLiveData.class.getSimpleName();
     // Firebase Utils.

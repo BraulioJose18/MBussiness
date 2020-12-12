@@ -1,21 +1,18 @@
 package com.practica02.mbussiness.repository.livedata;
 
 import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
-
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.*;
 import com.practica02.mbussiness.clases.Entity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class CollectionReferenceFirebaseLiveData<T extends Entity> extends LiveData<List<T>> implements EventListener<QuerySnapshot> {
     protected static String TAG = CollectionReferenceFirebaseLiveData.class.getSimpleName();
     // Firebase Utils.

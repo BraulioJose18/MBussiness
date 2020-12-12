@@ -43,21 +43,25 @@ public class ExampleDialog extends AppCompatDialogFragment {
         spinnerEstado.setAdapter(adapter);
         this.viewModel = new ViewModelProvider(this).get(MarcaViewModel.class);
 
-        builder.setView(view).setTitle("Añadir Item").setPositiveButton("Añadir", (dialog, which) -> {
-            String actualState = spinnerEstado.getSelectedItem().toString();
-            String registryState = "";
-            if (actualState.equalsIgnoreCase("Activo")) {
-                registryState = RequiredOperation.ACTIVE;
-            } else if (actualState.equalsIgnoreCase("Inactivo")) {
-                registryState = registryState = RequiredOperation.INACTIVE;
-            } else if (actualState.equalsIgnoreCase("Eliminado")) {
-                registryState = RequiredOperation.ELIMINATED;
-            } else {
-                registryState = RequiredOperation.ACTIVE;
-            }
-            viewModel.saveOrUpdate(new Marca(code.getText().toString(), name.getText().toString(), registryState));
-        }).setNegativeButton("Cancelar", (dialog, which) -> {
-        });
+        builder
+                .setView(view)
+                .setTitle("Añadir Item")
+                .setPositiveButton("Añadir", (dialog, which) -> {
+                    String actualState = spinnerEstado.getSelectedItem().toString();
+                    String registryState = "";
+                    if (actualState.equalsIgnoreCase("Activo")) {
+                        registryState = RequiredOperation.ACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Inactivo")) {
+                        registryState = registryState = RequiredOperation.INACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Eliminado")) {
+                        registryState = RequiredOperation.ELIMINATED;
+                    } else {
+                        registryState = RequiredOperation.ACTIVE;
+                    }
+                    viewModel.saveOrUpdate(new Marca(code.getText().toString(), name.getText().toString(), registryState));
+                })
+                .setNegativeButton("Cancelar", (dialog, which) -> {
+                });
 
 
         return builder.create();
