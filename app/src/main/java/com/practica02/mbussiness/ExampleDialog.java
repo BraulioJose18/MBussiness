@@ -51,6 +51,8 @@ public class ExampleDialog extends AppCompatDialogFragment {
                 registryState = registryState = RequiredOperation.INACTIVE;
             } else if (actualState.equalsIgnoreCase("Eliminado")) {
                 registryState = RequiredOperation.ELIMINATED;
+            } else {
+                registryState = RequiredOperation.ACTIVE;
             }
             viewModel.saveOrUpdate(new Marca(code.getText().toString(), name.getText().toString(), registryState));
         }).setNegativeButton("Cancelar", (dialog, which) -> {
