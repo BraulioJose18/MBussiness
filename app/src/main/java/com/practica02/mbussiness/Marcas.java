@@ -1,12 +1,15 @@
 package com.practica02.mbussiness;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +26,7 @@ import java.util.List;
 public class Marcas extends Fragment {
 
 
+    private static final String TAG = "MARCA";
     private static AdapterMarca adapterMarca;
     private static List<Marca> listaMarca;
     private MarcaViewModel viewModel;
@@ -70,12 +74,14 @@ public class Marcas extends Fragment {
         adapterMarca = new AdapterMarca(getContext());
         adapterMarca.setMarca(listaMarca);
         rvMarcas.setAdapter(adapterMarca);
-
+        adapterMarca.setOnViewClickDataListener(data -> {
+            Log.e(TAG, data.toString());
+            openDialog();
+        });
         viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), marcas -> {
             adapterMarca.setMarca(marcas);
             adapterMarca.notifyDataSetChanged();
         });
-
         return vista;
     }
 

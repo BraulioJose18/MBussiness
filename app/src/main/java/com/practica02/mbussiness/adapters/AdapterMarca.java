@@ -1,9 +1,11 @@
 package com.practica02.mbussiness.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,16 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.repository.RequiredOperation;
+import com.practica02.mbussiness.utils.OnClickDataListener;
+import lombok.Setter;
 
 import java.util.List;
 
-public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> implements View.OnClickListener {
+public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> {
 
     LayoutInflater inflater;
     List<Marca> marca;
 
-    //listener
-    private View.OnClickListener listener;
+    @Setter
+    private OnClickDataListener<Marca> onEditClickDataListener;
+    @Setter
+    private OnClickDataListener<Marca> onViewClickDataListener;
+    @Setter
+    private OnClickDataListener<Marca> onDeleteClickDataListener;
 
     public AdapterMarca(Context context) {
         this.inflater = LayoutInflater.from(context);
@@ -35,18 +43,11 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
     @Override
     public AdapterMarca.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.item_marca, parent, false);
-        view.setOnClickListener(this);
-
         return new ViewHolder(view);
-    }
-
-    public void setOnClickListener(View.OnClickListener listener) {
-        this.listener = listener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdapterMarca.ViewHolder holder, int position) {
-
         String codigo = marca.get(position).getCodigo();
         String nombre = marca.get(position).getNombre();
         String status = "";
@@ -61,6 +62,9 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
         holder.codigo.setText(codigo);
         holder.nombre.setText(nombre);
         holder.status.setText(status);
+        holder.bVer.setOnClickListener(v -> onViewClickDataListener.onClickDataOperation(marca.get(position)));
+        holder.bModificar.setOnClickListener(v -> onEditClickDataListener.onClickDataOperation(marca.get(position)));
+        holder.bEliminar.setOnClickListener(v -> onDeleteClickDataListener.onClickDataOperation(marca.get(position)));
     }
 
     @Override
@@ -68,23 +72,21 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
         return marca.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (listener != null) {
-            listener.onClick(v);
-        }
-
-    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        private static final String TAG = "ViewHolder";
         TextView codigo, nombre, status;
+        Button bVer, bModificar, bEliminar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             codigo = itemView.findViewById(R.id.codMarca);
             nombre = itemView.findViewById(R.id.nombreMarca);
             status = itemView.findViewById(R.id.statusMarca);
+            bVer = itemView.findViewById(R.id.bVer);
+            bModificar = itemView.findViewById(R.id.bModificar);
+            bEliminar = itemView.findViewById(R.id.bEliminar);
         }
     }
 
