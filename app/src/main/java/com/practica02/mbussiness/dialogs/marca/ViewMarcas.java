@@ -1,4 +1,4 @@
-package com.practica02.mbussiness;
+package com.practica02.mbussiness.dialogs.marca;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,18 +13,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Marca;
-import com.practica02.mbussiness.repository.RequiredOperation;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 
-public class ExampleDialog extends AppCompatDialogFragment {
+public class ViewMarcas extends AppCompatDialogFragment {
 
-    private static final String TAG = ExampleDialog.class.getSimpleName();
-    private EditText code, name, status;
+    private static final String TAG = ViewMarcas.class.getSimpleName();
+    private EditText code, name;
     Spinner spinnerEstado;
     private MarcaViewModel viewModel;
+    Marca data;
 
-
+    public ViewMarcas(Marca data){
+        this.data = data;
+    }
+    //Ya estoy mareado :v
 
     @NonNull
     @Override
@@ -32,36 +36,38 @@ public class ExampleDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.add_marca, null);
+        View view = inflater.inflate(R.layout.dialog_marca, null);
         code = view.findViewById(R.id.code);
         name = view.findViewById(R.id.name);
         spinnerEstado = view.findViewById(R.id.spinnerEstado);
-
         //String [] opciones = {"activo","inactivo","eliminado"};
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.combo_status, android.R.layout.simple_spinner_item);
         spinnerEstado.setAdapter(adapter);
+        String estado = data.getStatus();
+        int position;
+        if(estado.equalsIgnoreCase("A")){
+            position = 0;
+        }else if(estado.equalsIgnoreCase("I")){
+            position = 1;
+        }else{
+            position = 2;
+        }
+        spinnerEstado.setSelection(position);
+        spinnerEstado.setEnabled(false);
         this.viewModel = new ViewModelProvider(this).get(MarcaViewModel.class);
 
         builder
                 .setView(view)
-                .setTitle("Añadir Item")
-                .setPositiveButton("Añadir", (dialog, which) -> {
-                    String actualState = spinnerEstado.getSelectedItem().toString();
-                    String registryState = "";
-                    if (actualState.equalsIgnoreCase("Activo")) {
-                        registryState = RequiredOperation.ACTIVE;
-                    } else if (actualState.equalsIgnoreCase("Inactivo")) {
-                        registryState = registryState = RequiredOperation.INACTIVE;
-                    } else if (actualState.equalsIgnoreCase("Eliminado")) {
-                        registryState = RequiredOperation.ELIMINATED;
-                    } else {
-                        registryState = RequiredOperation.ACTIVE;
-                    }
-                    viewModel.saveOrUpdate(new Marca(code.getText().toString(), name.getText().toString(), registryState));
-                })
-                .setNegativeButton("Cancelar", (dialog, which) -> {
+                .setTitle("Detalles")
+                .setNegativeButton("Salir", (dialog, which) -> {
                 });
+
+        code.setText(data.getCodigo());
+        name.setText(data.getNombre());
+
+        code.setEnabled(false);
+        name.setEnabled(false);
 
 
         return builder.create();

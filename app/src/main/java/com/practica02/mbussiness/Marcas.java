@@ -3,21 +3,22 @@ package com.practica02.mbussiness;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.practica02.mbussiness.adapters.AdapterMarca;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.dialogs.marca.AddMarcas;
+import com.practica02.mbussiness.dialogs.marca.DeleteMarcas;
+import com.practica02.mbussiness.dialogs.marca.EditMarcas;
+import com.practica02.mbussiness.dialogs.marca.ViewMarcas;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class Marcas extends Fragment {
         adddMarca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openDialog();
+                openDialogAdd();
             }
         });
 
@@ -76,7 +77,15 @@ public class Marcas extends Fragment {
         rvMarcas.setAdapter(adapterMarca);
         adapterMarca.setOnViewClickDataListener(data -> {
             Log.e(TAG, data.toString());
-            openDialog();
+            openDialogView(data);
+        });
+        adapterMarca.setOnEditClickDataListener(data -> {
+            Log.e(TAG, data.toString());
+            editDialogView(data);
+        });
+        adapterMarca.setOnDeleteClickDataListener(data -> {
+            Log.e(TAG, data.toString());
+            deleteDialogView();
         });
         viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), marcas -> {
             adapterMarca.setMarca(marcas);
@@ -85,8 +94,20 @@ public class Marcas extends Fragment {
         return vista;
     }
 
-    public void openDialog() {
-        ExampleDialog exampleDialog = new ExampleDialog();
-        exampleDialog.show(this.getParentFragmentManager(), "example dialog");
+    public void openDialogAdd() {
+        AddMarcas addMarcaDialog = new AddMarcas();
+        addMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
+    }
+    public void openDialogView(Marca marca) {
+        ViewMarcas viewMarcaDialog = new ViewMarcas(marca);
+        viewMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
+    }
+    public void editDialogView(Marca marca) {
+        EditMarcas editMarcaDialog = new EditMarcas(marca);
+        editMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
+    }
+    public void deleteDialogView() {
+        DeleteMarcas deleteMarcaDialog = new DeleteMarcas();
+        deleteMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
 }

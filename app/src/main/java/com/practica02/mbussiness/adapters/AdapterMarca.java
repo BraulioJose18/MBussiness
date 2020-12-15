@@ -84,9 +84,9 @@ public class AdapterMarca extends RecyclerView.Adapter<AdapterMarca.ViewHolder> 
             codigo = itemView.findViewById(R.id.codMarca);
             nombre = itemView.findViewById(R.id.nombreMarca);
             status = itemView.findViewById(R.id.statusMarca);
-            bVer = itemView.findViewById(R.id.bVer);
-            bModificar = itemView.findViewById(R.id.bModificar);
-            bEliminar = itemView.findViewById(R.id.bEliminar);
+            bVer = itemView.findViewById(R.id.bVerMarca);
+            bModificar = itemView.findViewById(R.id.bModificarMarca);
+            bEliminar = itemView.findViewById(R.id.bEliminarMarca);
         }
     }
 
