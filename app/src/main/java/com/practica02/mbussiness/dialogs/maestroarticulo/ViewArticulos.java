@@ -110,6 +110,7 @@ public class ViewArticulos extends AppCompatDialogFragment {
             });
         });
         //spinnerMarca.setSelection(spinnerMarca.getSelectedItemPosition());
+
         spinnerUnidadMedida.setSelection(spinnerUnidadMedida.getSelectedItemPosition());
         return builder.create();
 
