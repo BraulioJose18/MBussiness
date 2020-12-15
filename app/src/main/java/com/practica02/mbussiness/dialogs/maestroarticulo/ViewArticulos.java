@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -17,12 +18,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Articulo;
+import com.practica02.mbussiness.clases.Entity;
 import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.viewmodel.ArticuloViewModel;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 import com.practica02.mbussiness.viewmodel.UnidadMedidaViewModel;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ViewArticulos extends AppCompatDialogFragment {
 
@@ -34,7 +37,7 @@ public class ViewArticulos extends AppCompatDialogFragment {
     private UnidadMedidaViewModel viewModelUnidadMedida;
     Articulo data;
 
-    public ViewArticulos(Articulo data){
+    public ViewArticulos(Articulo data) {
         this.data = data;
     }
     //Ya estoy mareado :v
@@ -58,8 +61,9 @@ public class ViewArticulos extends AppCompatDialogFragment {
         this.viewModelMarca = new ViewModelProvider(this).get(MarcaViewModel.class);
         MarcaArrayAdapter adapterMarca = new MarcaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerMarca.setAdapter(adapterMarca);
-        viewModelMarca.getAllListLiveData().observe(this, marcas -> {
+        viewModelMarca.getActiveListLiveData().observe(this, marcas -> {
             adapterMarca.setMarcas(marcas);
+            spinnerMarca.setSelection(marcas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getMarcaId()));
             adapterMarca.notifyDataSetChanged();
         });
 
@@ -67,8 +71,9 @@ public class ViewArticulos extends AppCompatDialogFragment {
         this.viewModelUnidadMedida = new ViewModelProvider(this).get(UnidadMedidaViewModel.class);
         UnidadMedidaArrayAdapter adapterUnidadMedida = new UnidadMedidaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerUnidadMedida.setAdapter(adapterUnidadMedida);
-        viewModelUnidadMedida.getAllListLiveData().observe(this, unidadMedidas -> {
+        viewModelUnidadMedida.getActiveListLiveData().observe(this, unidadMedidas -> {
             adapterUnidadMedida.setUnidadMedidas(unidadMedidas);
+            spinnerUnidadMedida.setSelection(unidadMedidas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getUnidadMedidaId()));
             adapterUnidadMedida.notifyDataSetChanged();
         });
 
@@ -77,11 +82,11 @@ public class ViewArticulos extends AppCompatDialogFragment {
         spinnerEstado.setAdapter(adapter);
         String estado = data.getStatus();
         int position;
-        if(estado.equalsIgnoreCase("A")){
+        if (estado.equalsIgnoreCase("A")) {
             position = 0;
-        }else if(estado.equalsIgnoreCase("I")){
+        } else if (estado.equalsIgnoreCase("I")) {
             position = 1;
-        }else{
+        } else {
             position = 2;
         }
         spinnerEstado.setSelection(position);
@@ -96,22 +101,16 @@ public class ViewArticulos extends AppCompatDialogFragment {
 
         code.setText(data.getCodigo());
         name.setText(data.getNombre());
-        String precio = data.getPrecioUnitario()+"";
+        String precio = data.getPrecioUnitario() + "";
         precioUnitario.setText(precio);
 
         code.setEnabled(false);
         name.setEnabled(false);
         precioUnitario.setEnabled(false);
 
-
-        viewModelMarca.getActiveListLiveData().observe(this,marcas -> {
-            spinnerMarca.post(()->{
-                spinnerMarca.setSelection(marcas.indexOf(data.getMarca()));
-            });
-        });
         //spinnerMarca.setSelection(spinnerMarca.getSelectedItemPosition());
 
-        spinnerUnidadMedida.setSelection(spinnerUnidadMedida.getSelectedItemPosition());
+        //spinnerUnidadMedida.setSelection(spinnerUnidadMedida.getSelectedItemPosition());
         return builder.create();
 
     }
