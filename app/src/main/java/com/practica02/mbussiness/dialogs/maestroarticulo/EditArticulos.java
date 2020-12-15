@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Articulo;
+import com.practica02.mbussiness.clases.Entity;
 import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.clases.UnidadMedida;
 import com.practica02.mbussiness.repository.RequiredOperation;
@@ -64,6 +65,7 @@ public class EditArticulos extends AppCompatDialogFragment {
         spinnerMarca.setAdapter(adapterMarca);
         viewModelMarca.getAllListLiveData().observe(this, marcas -> {
             adapterMarca.setMarcas(marcas);
+            spinnerMarca.setSelection(marcas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getMarcaId()));
             adapterMarca.notifyDataSetChanged();
         });
 
@@ -73,6 +75,7 @@ public class EditArticulos extends AppCompatDialogFragment {
         spinnerUnidadMedida.setAdapter(adapterUnidadMedida);
         viewModelUnidadMedida.getAllListLiveData().observe(this, unidadMedidas -> {
             adapterUnidadMedida.setUnidadMedidas(unidadMedidas);
+            spinnerUnidadMedida.setSelection(unidadMedidas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getUnidadMedidaId()));
             adapterUnidadMedida.notifyDataSetChanged();
         });
 
@@ -124,8 +127,9 @@ public class EditArticulos extends AppCompatDialogFragment {
         name.setText(data.getNombre());
         String precio = data.getPrecioUnitario()+"";
         precioUnitario.setText(precio);
-        spinnerMarca.setSelection(spinnerMarca.getSelectedItemPosition());
-        spinnerUnidadMedida.setSelection(spinnerUnidadMedida.getSelectedItemPosition());
+
+
+
         return builder.create();
     }
 }

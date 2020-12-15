@@ -47,8 +47,9 @@ public class DeleteArticulos extends AppCompatDialogFragment {
                 .setView(view)
                 .setTitle("¿Seguro que desea eliminar?")
                 .setPositiveButton("Confirmar", (dialog, which) -> {
-                    viewModel.delete(data);
-                    MaestroArticulos.adapterArticulos.notifyDataSetChanged();
+                    viewModel.delete(data).addOnCompleteListener((task)->{
+                        MaestroArticulos.adapterArticulos.notifyDataSetChanged();
+                    });
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                 });

@@ -35,7 +35,7 @@ public class UnidadMedidas extends Fragment {
 
 
     private static final String TAG = "UNIDAD MEDIDA";
-    private static AdapterUnidadMedida adapterUnidadMedida;
+    public static AdapterUnidadMedida adapterUnidadMedida;
     private static List<UnidadMedida> listaUnidadMedida;
     private UnidadMedidaViewModel viewModel;
     //AdapterMarca adapterMarca;
@@ -95,7 +95,7 @@ public class UnidadMedidas extends Fragment {
         });
         adapterUnidadMedida.setOnDeleteClickDataListener(data -> {
             Log.e(TAG, data.toString());
-            deleteDialogView();
+            deleteDialogView(data);
         });
         viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), unidadMedida -> {
             adapterUnidadMedida.setUnidadMedida(unidadMedida);
@@ -116,8 +116,8 @@ public class UnidadMedidas extends Fragment {
         EditUnidadMedida editUnidadMedidaDialog = new EditUnidadMedida(unidadMedida);
         editUnidadMedidaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
-    public void deleteDialogView() {
-        DeleteUnidadMedida deleteUnidadMedidaDialog = new DeleteUnidadMedida();
+    public void deleteDialogView(UnidadMedida unidadMedida) {
+        DeleteUnidadMedida deleteUnidadMedidaDialog = new DeleteUnidadMedida(unidadMedida);
         deleteUnidadMedidaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
 }

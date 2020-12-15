@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.repository.RequiredOperation;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 
 public class EditMarcas extends AppCompatDialogFragment {
@@ -57,9 +58,23 @@ public class EditMarcas extends AppCompatDialogFragment {
 
         builder
                 .setView(view)
-                .setTitle("Editar Información")
+                .setTitle("Editar Marca")
                 .setPositiveButton("Actualizar", (dialog, which) -> {
-
+                    String actualState = spinnerEstado.getSelectedItem().toString();
+                    String registryState = "";
+                    if (actualState.equalsIgnoreCase("Activo")) {
+                        registryState = RequiredOperation.ACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Inactivo")) {
+                        registryState = registryState = RequiredOperation.INACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Eliminado")) {
+                        registryState = RequiredOperation.ELIMINATED;
+                    } else {
+                        registryState = RequiredOperation.ACTIVE;
+                    }
+                    data.setCodigo(code.getText().toString());
+                    data.setNombre(name.getText().toString());
+                    data.setStatus(registryState);
+                    viewModel.saveOrUpdate(data);
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                 });

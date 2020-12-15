@@ -29,7 +29,7 @@ public class Marcas extends Fragment {
 
 
     private static final String TAG = "MARCA";
-    private static AdapterMarca adapterMarca;
+    public static AdapterMarca adapterMarca;
     private static List<Marca> listaMarca;
     private MarcaViewModel viewModel;
     //AdapterMarca adapterMarca;
@@ -89,7 +89,7 @@ public class Marcas extends Fragment {
         });
         adapterMarca.setOnDeleteClickDataListener(data -> {
             Log.e(TAG, data.toString());
-            deleteDialogView();
+            deleteDialogView(data);
         });
         viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), marcas -> {
             adapterMarca.setMarca(marcas);
@@ -110,8 +110,8 @@ public class Marcas extends Fragment {
         EditMarcas editMarcaDialog = new EditMarcas(marca);
         editMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
-    public void deleteDialogView() {
-        DeleteMarcas deleteMarcaDialog = new DeleteMarcas();
+    public void deleteDialogView(Marca marca) {
+        DeleteMarcas deleteMarcaDialog = new DeleteMarcas(marca);
         deleteMarcaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
 }

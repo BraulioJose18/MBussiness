@@ -107,6 +107,8 @@ public class ViewArticulos extends AppCompatDialogFragment {
         code.setEnabled(false);
         name.setEnabled(false);
         precioUnitario.setEnabled(false);
+        spinnerMarca.setEnabled(false);
+        spinnerUnidadMedida.setEnabled(false);
 
         //spinnerMarca.setSelection(spinnerMarca.getSelectedItemPosition());
 

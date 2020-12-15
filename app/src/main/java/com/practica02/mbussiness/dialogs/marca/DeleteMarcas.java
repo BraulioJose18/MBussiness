@@ -14,7 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.practica02.mbussiness.MaestroArticulos;
+import com.practica02.mbussiness.Marcas;
 import com.practica02.mbussiness.R;
+import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.viewmodel.ArticuloViewModel;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 
 public class DeleteMarcas extends AppCompatDialogFragment {
@@ -23,6 +27,12 @@ public class DeleteMarcas extends AppCompatDialogFragment {
 
     ImageView img;
 
+    private MarcaViewModel viewModel;
+    Marca data;
+
+    public DeleteMarcas(Marca data){
+        this.data = data;
+    }
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -35,11 +45,15 @@ public class DeleteMarcas extends AppCompatDialogFragment {
 
         //String [] opciones = {"activo","inactivo","eliminado"};
 
+        this.viewModel = new ViewModelProvider(this).get(MarcaViewModel.class);
+
         builder
                 .setView(view)
                 .setTitle("¿Seguro que desea eliminar?")
                 .setPositiveButton("Confirmar", (dialog, which) -> {
-
+                    viewModel.delete(data).addOnCompleteListener((task)->{
+                        Marcas.adapterMarca.notifyDataSetChanged();
+                    });
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                 });
