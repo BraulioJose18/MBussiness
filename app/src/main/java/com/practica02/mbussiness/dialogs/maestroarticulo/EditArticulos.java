@@ -124,6 +124,7 @@ public class EditArticulos extends AppCompatDialogFragment {
         name.setText(data.getNombre());
         String precio = data.getPrecioUnitario()+"";
         precioUnitario.setText(precio);
+        spinnerMarca.setSelection(spinnerMarca.getSelectedItemPosition());
         spinnerUnidadMedida.setSelection(spinnerUnidadMedida.getSelectedItemPosition());
         return builder.create();
     }
