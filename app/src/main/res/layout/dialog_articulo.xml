@@ -122,7 +122,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
-        android:hint="Ingrese el nombre de la marca"
+        android:hint="Ingrese el nombre del artículo"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
