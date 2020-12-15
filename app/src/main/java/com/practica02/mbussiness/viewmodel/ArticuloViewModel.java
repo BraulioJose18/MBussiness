@@ -13,6 +13,7 @@ import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLi
 public class ArticuloViewModel extends ViewModel {
     private final ArticuloRepository repository;
     private MultipleDocumentReferenceLiveData<Articulo, ? extends Query> allLiveData;
+    private MultipleDocumentReferenceLiveData<Articulo, ? extends Query> allLiveDataWithRelationships;
     private MultipleDocumentReferenceLiveData<Articulo, ? extends Query> activeLiveData;
     private MultipleDocumentReferenceLiveData<Articulo, ? extends Query> activeLiveDataWithRelationships;
 
@@ -25,6 +26,14 @@ public class ArticuloViewModel extends ViewModel {
             this.allLiveData = this.repository.findAll();
         }
         return this.allLiveData;
+    }
+
+
+    public MultipleDocumentReferenceLiveData<Articulo, ? extends Query> getAllListLiveDataWithMarcaAndUnidadMedida() {
+        if (allLiveDataWithRelationships == null) {
+            this.allLiveDataWithRelationships = this.repository.findAllWithMarcaAndUnidadMedida();
+        }
+        return this.allLiveDataWithRelationships;
     }
 
     public DocumentReferenceFirebaseLiveData<Articulo> getLiveData(String id) {
