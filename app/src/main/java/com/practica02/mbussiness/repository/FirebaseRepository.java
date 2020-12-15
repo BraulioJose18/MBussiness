@@ -2,6 +2,7 @@ package com.practica02.mbussiness.repository;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.*;
 import com.practica02.mbussiness.clases.Entity;
 import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
@@ -67,9 +68,9 @@ public abstract class FirebaseRepository<E extends Entity> implements CrudFireba
     }
 
     @Override
-    public void delete(E entity) {
+    public Task<Void> delete(E entity) {
         Log.e(TAG, "delete()");
-        this.collectionReference.document(entity.getDocumentId()).delete();
+        return this.collectionReference.document(entity.getDocumentId()).delete();
     }
 
     @Override

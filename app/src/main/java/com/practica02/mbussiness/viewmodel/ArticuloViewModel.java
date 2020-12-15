@@ -1,6 +1,7 @@
 package com.practica02.mbussiness.viewmodel;
 
 import androidx.lifecycle.ViewModel;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Articulo;
 import com.practica02.mbussiness.clases.Marca;
@@ -62,7 +63,7 @@ public class ArticuloViewModel extends ViewModel {
         }
     }
 
-    public void delete(Articulo marca) {
-        this.repository.delete(marca);
+    public Task<Void> delete(Articulo marca) {
+        return this.repository.delete(marca);
     }
 }

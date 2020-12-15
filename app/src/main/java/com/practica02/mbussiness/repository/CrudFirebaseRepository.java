@@ -1,5 +1,6 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Entity;
 import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
@@ -56,7 +57,7 @@ public interface CrudFirebaseRepository<E extends Entity, I> {
      *
      * @param entity Es la entidad a borrar.
      */
-    void delete(E entity);
+    Task<Void> delete(E entity);
 
     /**
      * Borrar datos en la Firebase.

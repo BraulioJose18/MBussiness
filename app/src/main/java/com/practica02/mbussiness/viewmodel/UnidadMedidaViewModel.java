@@ -1,11 +1,9 @@
 package com.practica02.mbussiness.viewmodel;
 
 import androidx.lifecycle.ViewModel;
-import com.google.firebase.firestore.CollectionReference;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.Query;
-import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.clases.UnidadMedida;
-import com.practica02.mbussiness.repository.MarcaRepository;
 import com.practica02.mbussiness.repository.UnidadMedidaRepository;
 import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
 import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
@@ -45,7 +43,7 @@ public class UnidadMedidaViewModel extends ViewModel {
         }
     }
 
-    public void delete(UnidadMedida marca) {
-        this.repository.delete(marca);
+    public Task<Void> delete(UnidadMedida unidadMedida) {
+        return this.repository.delete(unidadMedida);
     }
 }
