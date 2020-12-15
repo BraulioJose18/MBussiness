@@ -1,7 +1,6 @@
 package com.practica02.mbussiness.clases;
 
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.firestore.Exclude;
 import lombok.*;
 
@@ -13,6 +12,7 @@ import lombok.*;
 public class Articulo extends Entity {
     private String codigo;
     private String nombre;
+    private Double precioUnitario;
     private String status;
     // Codigo de la marca (NO DOCUMENT ID)
     private String marcaId;
@@ -23,10 +23,11 @@ public class Articulo extends Entity {
     @Exclude
     private LiveData<UnidadMedida> unidadMedida;
 
-    public Articulo(String codigo, String nombre, String status, String marcaId, String unidadMedidaId) {
+    public Articulo(String codigo, String nombre, Double precioUnitario, String status, String marcaId, String unidadMedidaId) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.status = status;
+        this.precioUnitario = precioUnitario;
         this.marcaId = marcaId;
         this.unidadMedidaId = unidadMedidaId;
     }
