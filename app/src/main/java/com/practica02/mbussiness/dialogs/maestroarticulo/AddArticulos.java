@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 public class AddArticulos extends AppCompatDialogFragment {
 
     private static final String TAG = AddArticulos.class.getSimpleName();
-    private EditText code, name;
+    private EditText code, name, precioUnitario;
     Spinner spinnerEstado, spinnerUnidadMedida, spinnerMarca;
     private ArticuloViewModel viewModel;
     private MarcaViewModel viewModelMarca;
@@ -47,6 +48,7 @@ public class AddArticulos extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.dialog_articulo, null);
         code = view.findViewById(R.id.codeArticulo);
         name = view.findViewById(R.id.nameArticulo);
+        precioUnitario = view.findViewById(R.id.precioArticulo);
 
         spinnerEstado = view.findViewById(R.id.spinnerEstadoArticulo);
 
@@ -91,13 +93,14 @@ public class AddArticulos extends AppCompatDialogFragment {
                     }
                     Marca marca = adapterMarca.getMarcas().get(spinnerMarca.getSelectedItemPosition());
                     UnidadMedida unidadMedida = adapterUnidadMedida.getUnidadMedidas().get(spinnerUnidadMedida.getSelectedItemPosition());
-                    viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(), 12.0, registryState, marca.getDocumentId(), unidadMedida.getDocumentId()));
+                    double precio = Double.parseDouble(precioUnitario.getText().toString());
+                    Log.e("Precio",precio+"gaaaaaaaaa");
+                    viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(), precio, registryState, marca.getDocumentId(), unidadMedida.getDocumentId()));
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                 });
 
 
         return builder.create();
-
     }
 }
