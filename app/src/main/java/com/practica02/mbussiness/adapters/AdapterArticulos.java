@@ -1,6 +1,7 @@
 package com.practica02.mbussiness.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,19 +36,18 @@ public class AdapterArticulos extends RecyclerView.Adapter<AdapterArticulos.View
     @Setter
     private OnClickDataListener<Articulo> onDeleteClickDataListener;
 
-    public AdapterArticulos(Context context, LifecycleOwner owner) {
+    public AdapterArticulos(Context context) {
         this.inflater = LayoutInflater.from(context);
-        this.owner = owner;
     }
 
-    public void setUnidadMedida(List<Articulo> articulosList) {
-        this.articulosList= articulosList;
+    public void setArticulosList(List<Articulo> articulosList) {
+        this.articulosList = articulosList;
     }
 
     @NonNull
     @Override
     public AdapterArticulos.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_unidad_medida, parent, false);
+        View view = inflater.inflate(R.layout.item_maestro_articulo, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,13 +55,17 @@ public class AdapterArticulos extends RecyclerView.Adapter<AdapterArticulos.View
     public void onBindViewHolder(@NonNull AdapterArticulos.ViewHolder holder, int position) {
         String codigo = articulosList.get(position).getCodigo();
         String nombre = articulosList.get(position).getNombre();
-        articulosList.get(position).getUnidadMedida().observe(this.owner,unidadMedida1 -> {
-            holder.unidadMedida.setText(unidadMedida1.getNombre());
-        });
-        String precio = articulosList.get(position).getPrecioUnitario()+"";
-        articulosList.get(position).getMarca().observe(this.owner,marca1 -> {
-            holder.marca.setText(marca1.getNombre());
-        });
+        if (articulosList.get(position).getUnidadMedida() != null) {
+            holder.unidadMedida.setText(articulosList.get(position).getUnidadMedida().getNombre());
+        } else {
+            Log.e("TAG", "Es nulo");
+        }
+        if (articulosList.get(position).getMarca() != null) {
+            holder.marca.setText(articulosList.get(position).getMarca().getNombre());
+        } else {
+            Log.e("TAG", "Es nulo");
+        }
+        String precio = articulosList.get(position).getPrecioUnitario() + "";
         String status = "";
         String registryState = articulosList.get(position).getStatus();
         if (registryState.equalsIgnoreCase(RequiredOperation.ACTIVE)) {
@@ -83,6 +87,10 @@ public class AdapterArticulos extends RecyclerView.Adapter<AdapterArticulos.View
     @Override
     public int getItemCount() {
         return articulosList.size();
+    }
+
+    public void setOwner(LifecycleOwner viewLifecycleOwner) {
+        this.owner = viewLifecycleOwner;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

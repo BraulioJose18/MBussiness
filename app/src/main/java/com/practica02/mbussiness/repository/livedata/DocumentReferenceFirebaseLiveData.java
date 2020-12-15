@@ -2,7 +2,7 @@ package com.practica02.mbussiness.repository.livedata;
 
 import android.util.Log;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.firestore.*;
 import com.practica02.mbussiness.clases.Entity;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class DocumentReferenceFirebaseLiveData<T extends Entity> extends LiveData<T> implements EventListener<DocumentSnapshot> {
+public class DocumentReferenceFirebaseLiveData<T extends Entity> extends MutableLiveData<T> implements EventListener<DocumentSnapshot> {
 
     protected static String TAG = DocumentReferenceFirebaseLiveData.class.getSimpleName();
     // Firebase Utils.

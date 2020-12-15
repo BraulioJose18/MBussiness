@@ -10,11 +10,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.practica02.mbussiness.adapters.AdapterArticulos;
+import com.practica02.mbussiness.adapters.AdapterMarca;
 import com.practica02.mbussiness.adapters.AdapterUnidadMedida;
 import com.practica02.mbussiness.clases.Articulo;
 import com.practica02.mbussiness.clases.Marca;
@@ -37,6 +39,7 @@ import com.practica02.mbussiness.viewmodel.UnidadMedidaViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MaestroArticulos extends Fragment {
 
@@ -87,8 +90,9 @@ public class MaestroArticulos extends Fragment {
         });*/
         viewModel = new ViewModelProvider(this).get(ArticuloViewModel.class);
         rvArticulo.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapterArticulos = new AdapterArticulos(getContext(),getViewLifecycleOwner());
-        adapterArticulos.setUnidadMedida(listaArticulos);
+        adapterArticulos = new AdapterArticulos(getContext());
+        adapterArticulos.setOwner(this.getViewLifecycleOwner());
+        adapterArticulos.setArticulosList(new ArrayList<>());
         rvArticulo.setAdapter(adapterArticulos);
         adapterArticulos.setOnViewClickDataListener(data -> {
             Log.e(TAG, data.toString());
@@ -102,8 +106,21 @@ public class MaestroArticulos extends Fragment {
             Log.e(TAG, data.toString());
             deleteDialogView();
         });
-        viewModel.getAllListLiveData().observe(this.getViewLifecycleOwner(), articulo -> {
-            adapterArticulos.setUnidadMedida(articulo);
+        LifecycleOwner owner = this.getViewLifecycleOwner();
+        viewModel.getAllActiveListLiveDataWithMarcaAndUnidadMedida().observe(owner, article -> {
+            Log.e(TAG, "UPDATE");
+            adapterArticulos.setArticulosList(article);
+            article.forEach(articulo -> {
+                Log.e(TAG, "Short UPDATE");
+                articulo.getUnidadMedidaLiveData().getDocumentReference().get().addOnCompleteListener(task -> {
+                    articulo.setUnidadMedida(Objects.requireNonNull(task.getResult()).toObject(UnidadMedida.class));
+                    adapterArticulos.notifyDataSetChanged();
+                });
+                articulo.getMarcaLiveData().getDocumentReference().get().addOnCompleteListener(task -> {
+                    articulo.setMarca(Objects.requireNonNull(task.getResult()).toObject(Marca.class));
+                    adapterArticulos.notifyDataSetChanged();
+                });
+            });
             adapterArticulos.notifyDataSetChanged();
         });
         return vista;
@@ -113,14 +130,17 @@ public class MaestroArticulos extends Fragment {
         AddArticulos addArticuloDialog = new AddArticulos();
         addArticuloDialog.show(this.getParentFragmentManager(), "example dialog");
     }
+
     public void openDialogView(Articulo articulo) {
         ViewArticulos viewArticulosDialog = new ViewArticulos(articulo);
         viewArticulosDialog.show(this.getParentFragmentManager(), "example dialog");
     }
+
     public void editDialogView(Articulo articulo) {
         EditArticulos editUnidadMedidaDialog = new EditArticulos(articulo);
         editUnidadMedidaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
+
     public void deleteDialogView() {
         DeleteArticulos deleteArticulosDialog = new DeleteArticulos();
         deleteArticulosDialog.show(this.getParentFragmentManager(), "example dialog");

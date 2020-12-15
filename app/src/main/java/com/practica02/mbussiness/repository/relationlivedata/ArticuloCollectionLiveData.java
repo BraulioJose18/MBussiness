@@ -4,6 +4,7 @@ import android.os.Build;
 import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,13 +30,12 @@ public class ArticuloCollectionLiveData<L extends Query> extends MultipleDocumen
             Log.e(TAG, "Updating");
             this.entityList.clear();
             this.entityList.addAll(querySnapshot.toObjects(Articulo.class));
-            for (int i = 0; i < querySnapshot.size(); i++)
+            for (int i = 0; i < querySnapshot.size(); i++) {
+                Log.e(TAG, "Changing Data on Article");
                 this.entityList.get(i).setDocumentId(querySnapshot.getDocuments().get(i).getId());
-            this.entityList.parallelStream()
-                    .forEach(articulo -> {
-                        articulo.setMarca(marcaRepository.findById(articulo.getMarcaId()));
-                        articulo.setUnidadMedida(unidadMedidaRepository.findById(articulo.getUnidadMedidaId()));
-                    });
+                this.entityList.get(i).setMarcaLiveData(this.marcaRepository.findById(this.entityList.get(i).getMarcaId()));
+                this.entityList.get(i).setUnidadMedidaLiveData(this.unidadMedidaRepository.findById(this.entityList.get(i).getUnidadMedidaId()));
+            }
             // Updating livedata.
             this.setValue(entityList);
         } else if (error != null) {

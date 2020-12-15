@@ -1,7 +1,9 @@
 package com.practica02.mbussiness.clases;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import com.google.firebase.firestore.Exclude;
+import com.practica02.mbussiness.repository.livedata.DocumentReferenceFirebaseLiveData;
 import lombok.*;
 
 @Data
@@ -19,9 +21,13 @@ public class Articulo extends Entity {
     // Codigo de la Unidad de Medida (NO DOCUMENT ID)
     private String unidadMedidaId;
     @Exclude
-    private LiveData<Marca> marca;
+    private DocumentReferenceFirebaseLiveData<Marca> marcaLiveData;
     @Exclude
-    private LiveData<UnidadMedida> unidadMedida;
+    private DocumentReferenceFirebaseLiveData<UnidadMedida> unidadMedidaLiveData;
+    @Exclude
+    private Marca marca;
+    @Exclude
+    private UnidadMedida unidadMedida;
 
     public Articulo(String codigo, String nombre, Double precioUnitario, String status, String marcaId, String unidadMedidaId) {
         this.codigo = codigo;
@@ -30,5 +36,25 @@ public class Articulo extends Entity {
         this.precioUnitario = precioUnitario;
         this.marcaId = marcaId;
         this.unidadMedidaId = unidadMedidaId;
+    }
+
+    @Exclude
+    public DocumentReferenceFirebaseLiveData<Marca> getMarcaLiveData() {
+        return marcaLiveData;
+    }
+
+    @Exclude
+    public DocumentReferenceFirebaseLiveData<UnidadMedida> getUnidadMedidaLiveData() {
+        return unidadMedidaLiveData;
+    }
+
+    @Exclude
+    public Marca getMarca() {
+        return marca;
+    }
+
+    @Exclude
+    public UnidadMedida getUnidadMedida() {
+        return unidadMedida;
     }
 }

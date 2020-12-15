@@ -18,19 +18,21 @@ import androidx.lifecycle.ViewModelProvider;
 import com.practica02.mbussiness.R;
 import com.practica02.mbussiness.clases.Articulo;
 import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.clases.UnidadMedida;
 import com.practica02.mbussiness.repository.RequiredOperation;
 import com.practica02.mbussiness.viewmodel.ArticuloViewModel;
 import com.practica02.mbussiness.viewmodel.MarcaViewModel;
 import com.practica02.mbussiness.viewmodel.UnidadMedidaViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class AddArticulos extends AppCompatDialogFragment {
 
     private static final String TAG = AddArticulos.class.getSimpleName();
     private EditText code, name;
-    Spinner spinnerEstado,spinnerUnidadMedida,spinnerMarca;
+    Spinner spinnerEstado, spinnerUnidadMedida, spinnerMarca;
     private ArticuloViewModel viewModel;
     private MarcaViewModel viewModelMarca;
     private UnidadMedidaViewModel viewModelUnidadMedida;
@@ -52,19 +54,21 @@ public class AddArticulos extends AppCompatDialogFragment {
         spinnerMarca = view.findViewById(R.id.spinnerMarca);
 
         this.viewModelMarca = new ViewModelProvider(this).get(MarcaViewModel.class);
-        ArrayList <String> marcasList = new ArrayList<String>();
-        viewModelMarca.getAllListLiveData().observe(getViewLifecycleOwner(),marcas -> {
-            marcas.parallelStream().map(marca -> {
-                return marca.getNombre();
-            }).collect(Collectors.toList());
-        });
-        ArrayAdapter<String> adapterMarca = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,);
+        MarcaArrayAdapter adapterMarca = new MarcaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerMarca.setAdapter(adapterMarca);
+        viewModelMarca.getAllListLiveData().observe(this, marcas -> {
+            adapterMarca.setMarcas(marcas);
+            adapterMarca.notifyDataSetChanged();
+        });
 
 
         this.viewModelUnidadMedida = new ViewModelProvider(this).get(UnidadMedidaViewModel.class);
-        ArrayAdapter<String> adapterUnidadMedida = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,);
-        spinnerMarca.setAdapter(adapterUnidadMedida);
+        UnidadMedidaArrayAdapter adapterUnidadMedida = new UnidadMedidaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
+        spinnerUnidadMedida.setAdapter(adapterUnidadMedida);
+        viewModelUnidadMedida.getAllListLiveData().observe(this, unidadMedidas -> {
+            adapterUnidadMedida.setUnidadMedidas(unidadMedidas);
+            adapterUnidadMedida.notifyDataSetChanged();
+        });
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.combo_status, android.R.layout.simple_spinner_item);
         spinnerEstado.setAdapter(adapter);
@@ -85,7 +89,9 @@ public class AddArticulos extends AppCompatDialogFragment {
                     } else {
                         registryState = RequiredOperation.ACTIVE;
                     }
-                    viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(),12.0, registryState,"holi","ga"));
+                    Marca marca = adapterMarca.getMarcas().get(spinnerMarca.getSelectedItemPosition());
+                    UnidadMedida unidadMedida = adapterUnidadMedida.getUnidadMedidas().get(spinnerUnidadMedida.getSelectedItemPosition());
+                    viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(), 12.0, registryState, marca.getDocumentId(), unidadMedida.getDocumentId()));
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
                 });
