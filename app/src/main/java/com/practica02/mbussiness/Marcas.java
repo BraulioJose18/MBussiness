@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -37,6 +38,7 @@ public class Marcas extends Fragment {
 
     //FloatingActionButton addMarca;
     Button adddMarca;
+    SearchView searchMarca;
 
     TextView codigo, nombre, estado;
 
@@ -53,6 +55,8 @@ public class Marcas extends Fragment {
         rvMarcas = vista.findViewById(R.id.rvMarcas);
         //addMarca = vista.findViewById(R.id.addMarca);
         adddMarca = vista.findViewById(R.id.adddMarca);
+        searchMarca = vista.findViewById(R.id.searchMarca);
+
 
         listaMarca = new ArrayList<>();
 

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.item1){
-                    showSelectedFragment(new UnidadMedida());
+                    showSelectedFragment(new UnidadMedidas());
 
                 }
                 if (item.getItemId() == R.id.item2){
