@@ -1,0 +1,97 @@
+package com.practica02.mbussiness.dialogs.maestroarticulo;
+
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.practica02.mbussiness.R;
+import com.practica02.mbussiness.clases.Articulo;
+import com.practica02.mbussiness.clases.Marca;
+import com.practica02.mbussiness.repository.RequiredOperation;
+import com.practica02.mbussiness.viewmodel.ArticuloViewModel;
+import com.practica02.mbussiness.viewmodel.MarcaViewModel;
+import com.practica02.mbussiness.viewmodel.UnidadMedidaViewModel;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
+public class AddArticulos extends AppCompatDialogFragment {
+
+    private static final String TAG = AddArticulos.class.getSimpleName();
+    private EditText code, name;
+    Spinner spinnerEstado,spinnerUnidadMedida,spinnerMarca;
+    private ArticuloViewModel viewModel;
+    private MarcaViewModel viewModelMarca;
+    private UnidadMedidaViewModel viewModelUnidadMedida;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_articulo, null);
+        code = view.findViewById(R.id.codeArticulo);
+        name = view.findViewById(R.id.nameArticulo);
+
+        spinnerEstado = view.findViewById(R.id.spinnerEstadoArticulo);
+
+        spinnerUnidadMedida = view.findViewById(R.id.spinnerUnidadMedida);
+        spinnerMarca = view.findViewById(R.id.spinnerMarca);
+
+        this.viewModelMarca = new ViewModelProvider(this).get(MarcaViewModel.class);
+        ArrayList <String> marcasList = new ArrayList<String>();
+        viewModelMarca.getAllListLiveData().observe(getViewLifecycleOwner(),marcas -> {
+            marcas.parallelStream().map(marca -> {
+                return marca.getNombre();
+            }).collect(Collectors.toList());
+        });
+        ArrayAdapter<String> adapterMarca = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,);
+        spinnerMarca.setAdapter(adapterMarca);
+
+
+        this.viewModelUnidadMedida = new ViewModelProvider(this).get(UnidadMedidaViewModel.class);
+        ArrayAdapter<String> adapterUnidadMedida = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item,);
+        spinnerMarca.setAdapter(adapterUnidadMedida);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.combo_status, android.R.layout.simple_spinner_item);
+        spinnerEstado.setAdapter(adapter);
+        this.viewModel = new ViewModelProvider(this).get(ArticuloViewModel.class);
+
+        builder
+                .setView(view)
+                .setTitle("Añadir Item")
+                .setPositiveButton("Añadir", (dialog, which) -> {
+                    String actualState = spinnerEstado.getSelectedItem().toString();
+                    String registryState = "";
+                    if (actualState.equalsIgnoreCase("Activo")) {
+                        registryState = RequiredOperation.ACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Inactivo")) {
+                        registryState = registryState = RequiredOperation.INACTIVE;
+                    } else if (actualState.equalsIgnoreCase("Eliminado")) {
+                        registryState = RequiredOperation.ELIMINATED;
+                    } else {
+                        registryState = RequiredOperation.ACTIVE;
+                    }
+                    viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(),12.0, registryState,"holi","ga"));
+                })
+                .setNegativeButton("Cancelar", (dialog, which) -> {
+                });
+
+
+        return builder.create();
+
+    }
+}
