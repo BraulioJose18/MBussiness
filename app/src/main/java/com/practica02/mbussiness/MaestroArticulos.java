@@ -1,5 +1,6 @@
 package com.practica02.mbussiness;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
@@ -45,7 +47,7 @@ public class MaestroArticulos extends Fragment {
 
 
     private static final String TAG = "MAESTRO ARTICULO";
-    private static AdapterArticulos adapterArticulos;
+    public static AdapterArticulos adapterArticulos;
     private static List<Articulo> listaArticulos;
     private ArticuloViewModel viewModel;
     //AdapterMarca adapterMarca;
@@ -63,6 +65,7 @@ public class MaestroArticulos extends Fragment {
         // Required empty public constructor
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -104,12 +107,13 @@ public class MaestroArticulos extends Fragment {
         });
         adapterArticulos.setOnDeleteClickDataListener(data -> {
             Log.e(TAG, data.toString());
-            deleteDialogView();
+            deleteDialogView(data);
         });
         LifecycleOwner owner = this.getViewLifecycleOwner();
-        viewModel.getAllActiveListLiveDataWithMarcaAndUnidadMedida().observe(owner, article -> {
+        viewModel.getAllListLiveDataWithMarcaAndUnidadMedida().observe(owner, article -> {
             Log.e(TAG, "UPDATE");
             adapterArticulos.setArticulosList(article);
+            adapterArticulos.notifyDataSetChanged();
             article.forEach(articulo -> {
                 Log.e(TAG, "Short UPDATE");
                 articulo.getUnidadMedidaLiveData().getDocumentReference().get().addOnCompleteListener(task -> {
@@ -121,7 +125,6 @@ public class MaestroArticulos extends Fragment {
                     adapterArticulos.notifyDataSetChanged();
                 });
             });
-            adapterArticulos.notifyDataSetChanged();
         });
         return vista;
     }
@@ -141,8 +144,8 @@ public class MaestroArticulos extends Fragment {
         editUnidadMedidaDialog.show(this.getParentFragmentManager(), "example dialog");
     }
 
-    public void deleteDialogView() {
-        DeleteArticulos deleteArticulosDialog = new DeleteArticulos();
+    public void deleteDialogView(Articulo articulo) {
+        DeleteArticulos deleteArticulosDialog = new DeleteArticulos(articulo);
         deleteArticulosDialog.show(this.getParentFragmentManager(), "example dialog");
     }
 }
