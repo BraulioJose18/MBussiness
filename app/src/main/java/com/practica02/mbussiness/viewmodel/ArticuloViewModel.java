@@ -3,6 +3,7 @@ package com.practica02.mbussiness.viewmodel;
 import androidx.lifecycle.ViewModel;
 import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Articulo;
+import com.practica02.mbussiness.clases.Marca;
 import com.practica02.mbussiness.clases.UnidadMedida;
 import com.practica02.mbussiness.repository.ArticuloRepository;
 import com.practica02.mbussiness.repository.UnidadMedidaRepository;
@@ -50,5 +51,9 @@ public class ArticuloViewModel extends ViewModel {
         } else {
             this.repository.save(marca);
         }
+    }
+
+    public void delete(Articulo marca) {
+        this.repository.delete(marca);
     }
 }

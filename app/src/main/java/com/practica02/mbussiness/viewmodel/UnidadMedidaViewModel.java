@@ -44,4 +44,8 @@ public class UnidadMedidaViewModel extends ViewModel {
             this.repository.save(marca);
         }
     }
+
+    public void delete(UnidadMedida marca) {
+        this.repository.delete(marca);
+    }
 }

@@ -41,4 +41,8 @@ public class MarcaViewModel extends ViewModel {
             this.repository.save(marca);
         }
     }
+
+    public void delete(Marca marca) {
+        this.repository.delete(marca);
+    }
 }
