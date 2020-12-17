@@ -63,7 +63,7 @@ public class EditArticulos extends AppCompatDialogFragment {
         this.viewModelMarca = new ViewModelProvider(this).get(MarcaViewModel.class);
         MarcaArrayAdapter adapterMarca = new MarcaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerMarca.setAdapter(adapterMarca);
-        viewModelMarca.getAllListLiveData().observe(this, marcas -> {
+        viewModelMarca.getActiveListLiveData().observe(this, marcas -> {
             adapterMarca.setMarcas(marcas);
             spinnerMarca.setSelection(marcas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getMarcaId()));
             adapterMarca.notifyDataSetChanged();
@@ -73,7 +73,7 @@ public class EditArticulos extends AppCompatDialogFragment {
         this.viewModelUnidadMedida = new ViewModelProvider(this).get(UnidadMedidaViewModel.class);
         UnidadMedidaArrayAdapter adapterUnidadMedida = new UnidadMedidaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerUnidadMedida.setAdapter(adapterUnidadMedida);
-        viewModelUnidadMedida.getAllListLiveData().observe(this, unidadMedidas -> {
+        viewModelUnidadMedida.getActiveListLiveData().observe(this, unidadMedidas -> {
             adapterUnidadMedida.setUnidadMedidas(unidadMedidas);
             spinnerUnidadMedida.setSelection(unidadMedidas.stream().map(Entity::getDocumentId).collect(Collectors.toList()).indexOf(data.getUnidadMedidaId()));
             adapterUnidadMedida.notifyDataSetChanged();

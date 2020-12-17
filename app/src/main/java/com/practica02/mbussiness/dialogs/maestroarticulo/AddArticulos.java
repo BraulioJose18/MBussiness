@@ -58,7 +58,7 @@ public class AddArticulos extends AppCompatDialogFragment {
         this.viewModelMarca = new ViewModelProvider(this).get(MarcaViewModel.class);
         MarcaArrayAdapter adapterMarca = new MarcaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerMarca.setAdapter(adapterMarca);
-        viewModelMarca.getAllListLiveData().observe(this, marcas -> {
+        viewModelMarca.getActiveListLiveData().observe(this, marcas -> {
             adapterMarca.setMarcas(marcas);
             adapterMarca.notifyDataSetChanged();
         });
@@ -67,7 +67,7 @@ public class AddArticulos extends AppCompatDialogFragment {
         this.viewModelUnidadMedida = new ViewModelProvider(this).get(UnidadMedidaViewModel.class);
         UnidadMedidaArrayAdapter adapterUnidadMedida = new UnidadMedidaArrayAdapter(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>());
         spinnerUnidadMedida.setAdapter(adapterUnidadMedida);
-        viewModelUnidadMedida.getAllListLiveData().observe(this, unidadMedidas -> {
+        viewModelUnidadMedida.getActiveListLiveData().observe(this, unidadMedidas -> {
             adapterUnidadMedida.setUnidadMedidas(unidadMedidas);
             adapterUnidadMedida.notifyDataSetChanged();
         });
@@ -94,7 +94,7 @@ public class AddArticulos extends AppCompatDialogFragment {
                     Marca marca = adapterMarca.getMarcas().get(spinnerMarca.getSelectedItemPosition());
                     UnidadMedida unidadMedida = adapterUnidadMedida.getUnidadMedidas().get(spinnerUnidadMedida.getSelectedItemPosition());
                     double precio = Double.parseDouble(precioUnitario.getText().toString());
-                    Log.e("Precio",precio+"gaaaaaaaaa");
+                    Log.e("Precio", precio + "gaaaaaaaaa");
                     viewModel.saveOrUpdate(new Articulo(code.getText().toString(), name.getText().toString(), precio, registryState, marca.getDocumentId(), unidadMedida.getDocumentId()));
                 })
                 .setNegativeButton("Cancelar", (dialog, which) -> {
