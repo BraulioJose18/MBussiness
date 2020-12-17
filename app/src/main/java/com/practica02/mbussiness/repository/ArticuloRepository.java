@@ -1,5 +1,7 @@
 package com.practica02.mbussiness.repository;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Articulo;
@@ -22,6 +24,15 @@ public class ArticuloRepository extends FirebaseRepository<Articulo> implements 
             instance = new ArticuloRepository();
         }
         return instance;
+    }
+
+    @Override
+    public Task<Void> delete(Articulo entity) {
+        entity.setStatus(ELIMINATED);
+        return Tasks.call(() -> {
+            super.save(entity);
+            return null;
+        });
     }
 
     public ArticuloCollectionLiveData<? extends Query> findAllWithMarcaAndUnidadMedida() {
