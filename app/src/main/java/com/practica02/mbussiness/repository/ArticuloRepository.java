@@ -2,7 +2,6 @@ package com.practica02.mbussiness.repository;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 import com.practica02.mbussiness.clases.Articulo;
 import com.practica02.mbussiness.repository.livedata.MultipleDocumentReferenceLiveData;
@@ -30,7 +29,7 @@ public class ArticuloRepository extends FirebaseRepository<Articulo> implements 
     public Task<Void> delete(Articulo entity) {
         entity.setStatus(ELIMINATED);
         return Tasks.call(() -> {
-            super.save(entity);
+            super.update(entity);
             return null;
         });
     }
